@@ -1,3 +1,4 @@
+maindir %= 360
 if (sbeam == 1)
 {
     time += 0.4
@@ -10,6 +11,8 @@ else
     if (chargebeam == 1)
         w_arc = 30
 }
+if (sbeam && wbeam == 0 && maindir > 354.5)
+    maindir = 354.5
 if instance_exists(oCharacter)
 {
     if (((maindir >= -20 && maindir <= 60) || (maindir >= 300 && maindir <= 361)) && oCharacter.xVel > 0)
@@ -28,9 +31,7 @@ if (wbeam && sbeam == 0)
 }
 if (sbeam && wbeam == 0 && beamid == 1)
 {
-    if (time < 1 && chargebeam == 0)
-        direction = (maindir + 20)
-    if (time < 1 && chargebeam == 1)
+    if (time < 1)
         direction = (maindir + 20)
     if (time >= 1.3 && direction > maindir && chargebeam == 0)
         direction -= 5
@@ -39,9 +40,7 @@ if (sbeam && wbeam == 0 && beamid == 1)
 }
 if (sbeam && wbeam == 0 && beamid == 2)
 {
-    if (time < 1 && chargebeam == 0)
-        direction = (maindir - 20)
-    if (time < 1 && chargebeam == 1)
+    if (time < 1)
         direction = (maindir - 20)
     if (maindir == 0)
     {

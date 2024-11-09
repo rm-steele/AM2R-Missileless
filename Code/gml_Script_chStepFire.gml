@@ -1,5 +1,6 @@
 var tempangle;
-if (kFire && kFirePushedSteps == 0 && nofire == 0 && turning == 0 && morphing == 0 && unmorphing == 0 && walljumping == 0 && monster_drain == 0 && (!instance_exists(oEMPNoise)))
+prevchargebeam = chargebeam
+if ((kFire || (kFireReleased && prevnofire > 0)) && (kFirePushedSteps == 0 || (prevnofire > 0 && kFirePushedSteps < 16)) && nofire == 0 && turning == 0 && morphing == 0 && unmorphing == 0 && walljumping == 0 && monster_drain == 0 && (!instance_exists(oEMPNoise)))
 {
     idle = 0
     chStepSetSprite()
@@ -51,8 +52,7 @@ if (kFire && kFirePushedSteps == 0 && nofire == 0 && turning == 0 && morphing ==
                 tempangle = 270
             }
             repeat global.btanks
-                shoot_beam(((tempangle + (random(30) - 15)) % 360))
-            nofire = ((60 - (5 * global.ctanks)) - floor((0.22727272727272727 * global.btanks)))
+                shoot_beam((((tempangle + (random(30) - 15)) + 360) % 360))
         }
         if ((global.opmslstyle == 0 && armmsl == 1) || (global.opmslstyle == 1 && (global.currentweapon == 1 || global.currentweapon == 2)))
         {
@@ -139,6 +139,7 @@ if (chargebeam > 0)
         charge_beam_fire()
         if (turning == 0 && morphing == 0 && unmorphing == 0 && walljumping == 0 && state != CLIMBING && state != SJSTART && state != SUPERJUMP && state != SJEND && state != BRAKING)
             chargebeam = 0
+        was_charge_shot = 1
     }
     if (state == BALL || state == AIRBALL || state == SPIDERBALL)
     {
@@ -153,6 +154,14 @@ if (chargebeam > 0)
 }
 if (instance_number(oChargeBeamSpark1) == 0 && chargebeam > 0)
     instance_create((x + aspr2x), (y + aspr2y), oChargeBeamSpark1)
+if (kFireReleased && nofire <= 0 && (!((state == 23 || state == 24 || state == 27 || state == GRABBEDQUEENMORPH || state == GRABBEDQUEENBELLY))))
+{
+    if was_charge_shot
+        nofire = floor((((60 - (5 * global.ctanks)) - floor((0.22727272727272727 * global.btanks))) * 1.25))
+    else
+        nofire = ((60 - (5 * global.ctanks)) - floor((0.22727272727272727 * global.btanks)))
+    was_charge_shot = 0
+}
 damage = 15
 if global.wbeam
     damage *= 1.5

@@ -16,15 +16,18 @@ if (state == 1)
     if (statetime == 120)
     {
         global.event[250] = 1
-        global.event[57] = 1
-        global.event[110] = 1
-        global.event[163] = 1
-        global.event[251] = 1
-        global.event[252] = 1
-        global.event[253] = 1
-        global.event[254] = 1
-        global.event[256] = 1
-        global.event[262] = 1
+        if (global.gamemode > 2)
+        {
+            global.event[57] = 1
+            global.event[110] = 1
+            global.event[163] = 1
+            global.event[251] = 1
+            global.event[252] = 1
+            global.event[253] = 1
+            global.event[254] = 1
+            global.event[256] = 1
+            global.event[262] = 1
+        }
         mus_change(musArea5B)
         with (oDoor)
             event_user(3)
